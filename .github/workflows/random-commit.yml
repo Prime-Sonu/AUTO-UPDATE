@@ -21,11 +21,11 @@ jobs:
       - name: Execute Update
         if: ${{ env.TRIGGER <= 8 }}
         run: |
-          echo "Last Activity: $(date)" >> activity.txt
-          git config --global user.name "Sayan Mete"
+          echo "✨ Active Now: $(date) | SAYAN (SONU) 🚀" >> activity.txt
+          git config --global user.name "SAYAN (SONU)"
           git config --global user.email "sayanbusiness027@gmail.com"
           git add activity.txt
-          git commit -m "System Sync: $(date)"
+          git commit -m "🚀 System Sync | Updated by SAYAN (SONU) | $(date)"
           git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}.git
           git push origin HEAD:main
           
