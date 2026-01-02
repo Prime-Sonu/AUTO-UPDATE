@@ -1,0 +1,31 @@
+name: GitHub Profile Auto-Green
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Run Logic
+        id: bot
+        run: echo "TRIGGER=$((RANDOM % 10))" >> $GITHUB_ENV
+
+      - name: Execute Update
+        if: ${{ env.TRIGGER <= 8 }}
+        run: |
+          echo "Last Activity: $(date)" >> activity.txt
+          git config --global user.name "Sayan Mete"
+          git config --global user.email "sayanbusiness027@gmail.com"
+          git add activity.txt
+          git commit -m "System Sync: $(date)"
+          git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}.git
+          git push origin HEAD:main
+          
