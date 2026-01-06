@@ -2,8 +2,11 @@ name: Sayan Action BOT
 
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/7 * * * *"
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   update-text:
@@ -17,18 +20,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Update Activity Log
+      - name: Configure Git User
         run: |
-          export TZ="Asia/Kolkata"
-          echo "✨ Profile Active | IST: $(date +'%Y-%m-%d %H:%M:%S') | Session: $RANDOM" >> last_activity.txt
-
-      - name: Commit & Push as Sayan
-        run: |
-          export TZ="Asia/Kolkata"
           git config --global user.name "Prime-Sonu"
           git config --global user.email "247044568+Prime-Sonu@users.noreply.github.com"
+
+      - name: Sync and Update Log
+        run: |
+          export TZ="Asia/Kolkata"
+          # কনফ্লিক্ট এড়ানোর জন্য প্রথমে পুল করা হচ্ছে
+          git pull origin main --rebase
           
+          # নতুন লাইনে ডাটা সেভ করা হচ্ছে (ফাইল নেম ফিক্সড)
+          echo "✨ Profile Active | IST: $(date +'%Y-%m-%d %H:%M:%S') | Session: $RANDOM" >> activity.txt
+          
+          # ফাইল অ্যাড এবং কমিট
           git add activity.txt
           git commit -m "Activity Log Updated ✅ [$(date +'%d-%m-%Y %H:%M')] #$RANDOM" --allow-empty
-          git push
+          git push origin main
           
