@@ -2,7 +2,7 @@ name: Sayan Action BOT
 
 on:
   schedule:
-    - cron: "*/7 * * * *"
+    - cron: "*/6 * * * *"
   workflow_dispatch:
   push:
     branches:
@@ -28,13 +28,12 @@ jobs:
       - name: Sync and Update Log
         run: |
           export TZ="Asia/Kolkata"
-          # কনফ্লিক্ট এড়ানোর জন্য প্রথমে পুল করা হচ্ছে
           git pull origin main --rebase
           
-          # নতুন লাইনে ডাটা সেভ করা হচ্ছে (ফাইল নেম ফিক্সড)
           echo "✨ Profile Active | IST: $(date +'%Y-%m-%d %H:%M:%S') | Session: $RANDOM" >> activity.txt
-          
-          # ফাইল অ্যাড এবং কমিট
+
+
+
           git add activity.txt
           git commit -m "Activity Log Updated ✅ [$(date +'%d-%m-%Y %H:%M')] #$RANDOM" --allow-empty
           git push origin main
